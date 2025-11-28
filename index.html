@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>แผนที่รวม โรงครัวกลาง & ศูนย์พักพิง</title>
+
+  <!-- ฟอนต์ Sarabun -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <!-- Leaflet Fullscreen Plugin CSS -->
+  <link
+    rel="stylesheet"
+    href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css"
+  />
+
+  <!-- CSS หลัก -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<nav class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item">
+      แผนที่รวม
+    </a>
+    <a href="kitchen.html" class="bottom-nav-item bottom-nav-item-active">
+      โรงครัวกลาง
+    </a>
+    <a href="shelters.html" class="bottom-nav-item">
+      ศูนย์พักพิง
+    </a>
+    <a href="form/index.html" class="bottom-nav-item">
+      แจ้งโรงครัว/ศูนย์อพยพ
+    </a>
+</nav>
+
+
+
+<body>
+  <div class="page">
+    <!-- ส่วนหัว -->
+    <header class="topbar">
+      <div class="topbar-main">
+        <div class="topbar-title">
+          <h1>แผนที่รวม โรงครัวกลาง &amp; ศูนย์พักพิง</h1>
+          <p>แสดงตำแหน่งโรงครัวกลางและศูนย์พักพิงจาก Google Sheets</p>
+        </div>
+        <div class="topbar-badge">
+          <span class="badge-label">สถานะระบบ</span>
+          <span id="status-text" class="badge-value badge-loading">
+            กำลังโหลดข้อมูล...
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- เนื้อหาหลัก -->
+    <main class="layout">
+      <!-- แผงควบคุม -->
+      <section class="controls">
+        <div class="controls-section">
+          <h2>ค้นหา &amp; ตัวกรอง</h2>
+
+          <label class="field">
+            <span class="field-label">ค้นหา</span>
+            <input
+              type="text"
+              id="search-input"
+              class="field-input"
+              placeholder="ชื่อจุด / สถานที่ / ผู้ประสานงาน"
+            />
+          </label>
+
+          <div class="filters-grid">
+            <label class="field">
+              <span class="field-label">จังหวัด</span>
+              <select id="filter-province" class="field-input">
+                <option value="">ทุกจังหวัด</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">อำเภอ</span>
+              <select id="filter-district" class="field-input">
+                <option value="">ทุกอำเภอ</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">ตำบล</span>
+              <select id="filter-subdistrict" class="field-input">
+                <option value="">ทุกตำบล</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">ประเภทจุด</span>
+              <select id="filter-type" class="field-input">
+                <option value="">ทุกประเภท</option>
+                <option value="kitchen">โรงครัวกลาง</option>
+                <option value="shelter">ศูนย์พักพิง</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="controls-actions">
+            <button id="btn-reset" class="btn btn-outline">
+              รีเซ็ตตัวกรอง
+            </button>
+            <button id="btn-locate" class="btn">
+              ใช้ตำแหน่งปัจจุบันของฉัน
+            </button>
+          </div>
+        </div>
+
+        <div class="controls-section stats">
+          <h2>สรุปข้อมูลรวม</h2>
+          <div class="stats-grid stats-grid-2">
+            <div class="stat-card">
+              <span class="stat-label">จำนวนจุดทั้งหมด</span>
+              <span id="stat-total" class="stat-value">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">จุดที่แสดงตามตัวกรอง</span>
+              <span id="stat-visible" class="stat-value">0</span>
+            </div>
+          </div>
+          <div class="legend-row">
+            <span class="legend-item">
+              <span class="legend-dot legend-dot-kitchen"></span>
+              โรงครัวกลาง
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot legend-dot-shelter"></span>
+              ศูนย์พักพิง
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- แผนที่ -->
+      <section class="map-panel">
+        <div id="map"></div>
+      </section>
+    </main>
+
+    <!-- รายการจุดทั้งหมด -->
+    <section class="list-panel">
+      <div class="list-header">
+        <h2>รายการจุดทั้งหมด</h2>
+        <span id="list-count" class="list-count">0 แห่ง</span>
+      </div>
+      <div id="center-list" class="center-list">
+        <!-- จาก JS -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet Fullscreen Plugin JS -->
+  <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+
+  <!-- JS แผนที่รวม -->
+  <script src="index.js"></script>
+</body>
+</html>

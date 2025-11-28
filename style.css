@@ -1,0 +1,492 @@
+:root {
+  --bg: #f5f5f5;
+  --bg-soft: #ffffff;
+  --bg-softer: #f9fafb;
+  --accent: #0284c7;
+  --accent-soft: rgba(2, 132, 199, 0.12);
+  --border: #d1d5db;
+  --border-soft: #e5e7eb;
+  --text: #111827;
+  --text-soft: #6b7280;
+  --danger: #ef4444;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: "Sarabun", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Root Layout (เผื่อที่ให้ bottom nav เสมอ) */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 5rem;
+}
+
+/* Topbar */
+.topbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 0.7rem 1rem;
+}
+
+.topbar-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-title h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.topbar-title p {
+  margin: 0.1rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.badge-label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-soft);
+}
+
+.badge-value {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+}
+
+.badge-loading {
+  color: #b45309;
+  border-color: #facc15;
+}
+
+.badge-success {
+  color: #15803d;
+  border-color: #22c55e;
+}
+
+.badge-error {
+  color: #b91c1c;
+  border-color: var(--danger);
+}
+
+/* Main layout */
+.layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 0.5rem;
+}
+
+/* Controls */
+.controls {
+  background: var(--bg-soft);
+  border-radius: 1rem;
+  border: 1px solid var(--border-soft);
+  padding: 0.9rem;
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1rem;
+}
+
+.controls-section h2 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.55rem;
+}
+
+.field-label {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-bottom: 0.2rem;
+}
+
+.field-input {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  color: var(--text);
+  padding: 0.45rem 0.6rem;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.field-input::placeholder {
+  color: #9ca3af;
+}
+
+.field-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
+}
+
+/* Filters grid */
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  color: #ffffff;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.btn:hover {
+  filter: brightness(1.05);
+}
+
+.btn-outline {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: #0f172a;
+}
+
+.controls-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+  flex-wrap: wrap;
+}
+
+/* Stats */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.4rem;
+}
+
+.stats-grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stat-card {
+  background: var(--bg-softer);
+  border-radius: 0.8rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border-soft);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-bottom: 0.2rem;
+}
+
+.stat-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Legend */
+.legend-row {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-soft);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.legend-dot-kitchen {
+  background: #f97316;
+}
+
+.legend-dot-shelter {
+  background: #22c55e;
+}
+
+/* Map panel */
+.map-panel {
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  background: #ffffff;
+  min-height: 320px;
+}
+
+#map {
+  width: 100%;
+  height: 380px;
+}
+
+/* กันไม่ให้ map ทับเมนูล่าง */
+.leaflet-container {
+  z-index: 1 !important;
+}
+
+/* List panel */
+.list-panel {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0.5rem auto 1rem;
+  padding: 0 1rem 0.25rem;
+}
+
+.list-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.list-header h2 {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.list-count {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+/* Centers list */
+.center-list {
+  max-height: 260px;
+  overflow-y: auto;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-soft);
+  background: #ffffff;
+  padding: 0.45rem;
+}
+
+/* Card */
+.center-card {
+  border-radius: 0.6rem;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--border-soft);
+  margin-bottom: 0.4rem;
+  cursor: pointer;
+  background: #f9fafb;
+  transition: background 0.12s ease, border-color 0.12s ease,
+    transform 0.08s ease;
+}
+
+.center-card:hover {
+  border-color: var(--accent);
+  background: #eff6ff;
+  transform: translateY(-1px);
+}
+
+.center-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
+  background: #e0f2fe;
+}
+
+.center-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.center-location {
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  margin-top: 0.1rem;
+}
+
+.center-detail {
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+  color: #374151;
+}
+
+.center-meta {
+  font-size: 0.7rem;
+  margin-top: 0.2rem;
+  color: var(--text-soft);
+}
+
+/* Leaflet popup */
+.leaflet-popup-content-wrapper {
+  background: #ffffff;
+  color: #111827;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-soft);
+}
+
+.leaflet-popup-tip {
+  background: #ffffff;
+}
+
+/* fullscreen control */
+.leaflet-control-fullscreen a {
+  background: #ffffff;
+  border-radius: 4px;
+  border: 1px solid var(--border-soft);
+}
+
+.leaflet-control-fullscreen a:hover {
+  background: #eff6ff;
+}
+
+/* Scrollbar */
+.center-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.center-list::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 999px;
+}
+
+.center-list::-webkit-scrollbar-thumb {
+  background-color: #cbd5f5;
+  border-radius: 999px;
+}
+
+/* Bottom Navigation – Tab style */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4.3rem;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  z-index: 9999;
+  border-top: 1px solid var(--border-soft);
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-item {
+  flex: 1;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-soft);
+  position: relative;
+  transition: 0.15s;
+  border-radius: 0.65rem;
+  margin: 0.45rem 0.35rem;
+}
+
+/* แท็บที่ active = สีพื้นเต็มแท็บเหมือนเมนู */
+.bottom-nav-item-active {
+  background: #e8f3ff;
+  color: var(--accent);
+  box-shadow: 0 0 0 1px #c7e3ff inset;
+}
+
+/* Desktop bottom nav แบบลอย */
+@media (min-width: 900px) {
+  .bottom-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 1rem 1rem 0 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  #map {
+    height: 360px;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar-main {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .layout {
+    padding-inline: 0.75rem;
+  }
+
+  .controls {
+    padding: 0.75rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .center-list {
+    max-height: 280px;
+  }
+}

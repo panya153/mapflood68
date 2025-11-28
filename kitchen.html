@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>แผนที่โรงครัวกลางช่วยเหลือผู้ประสบภัย</title>
+
+  <!-- ฟอนต์ Sarabun -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Leaflet CSS (ไม่มี integrity/crossorigin) -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+
+  <!-- Leaflet Fullscreen Plugin CSS -->
+  <link
+    rel="stylesheet"
+    href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css"
+  />
+
+  <!-- CSS หลัก -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page">
+    <!-- ส่วนหัว -->
+    <header class="topbar">
+      <div class="topbar-main">
+        <div class="topbar-title">
+          <h1>แผนที่โรงครัวกลางช่วยเหลือผู้ประสบภัย</h1>
+          <p>ดึงข้อมูลจาก Google Sheets และแสดงบนแผนที่แบบโต้ตอบ</p>
+        </div>
+        <div class="topbar-badge">
+          <span class="badge-label">สถานะระบบ</span>
+          <span id="status-text" class="badge-value badge-loading">
+            กำลังโหลดข้อมูล...
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- เนื้อหาหลัก -->
+    <main class="layout">
+      <!-- แผงควบคุม -->
+      <section class="controls">
+        <div class="controls-section">
+          <h2>ค้นหา &amp; ตัวกรอง</h2>
+
+          <label class="field">
+            <span class="field-label">ค้นหา</span>
+            <input
+              type="text"
+              id="search-input"
+              class="field-input"
+              placeholder="ชื่อศูนย์ / รายละเอียด / ผู้ประสานงาน"
+            />
+          </label>
+
+          <div class="filters-grid">
+            <label class="field">
+              <span class="field-label">จังหวัด</span>
+              <select id="filter-province" class="field-input">
+                <option value="">ทุกจังหวัด</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">อำเภอ</span>
+              <select id="filter-district" class="field-input">
+                <option value="">ทุกอำเภอ</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span class="field-label">ตำบล</span>
+              <select id="filter-subdistrict" class="field-input">
+                <option value="">ทุกตำบล</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="controls-actions">
+            <button id="btn-reset" class="btn btn-outline">
+              รีเซ็ตตัวกรอง
+            </button>
+            <button id="btn-locate" class="btn">
+              ใช้ตำแหน่งปัจจุบันของฉัน
+            </button>
+          </div>
+        </div>
+
+        <div class="controls-section stats">
+          <h2>สรุปข้อมูล</h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-label">จำนวนศูนย์ทั้งหมด</span>
+              <span id="stat-total" class="stat-value">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">ศูนย์ที่แสดงตามตัวกรอง</span>
+              <span id="stat-visible" class="stat-value">0</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- แผนที่ -->
+      <section class="map-panel">
+        <div id="map"></div>
+      </section>
+    </main>
+
+    <!-- รายการศูนย์ -->
+    <section class="list-panel">
+      <div class="list-header">
+        <h2>รายการโรงครัวกลาง</h2>
+        <span id="list-count" class="list-count">0 แห่ง</span>
+      </div>
+      <div id="center-list" class="center-list">
+        <!-- รายการจาก JS -->
+      </div>
+    </section>
+  </div>
+
+  <!-- เมนูนำทางด้านล่าง (อยู่ใน body และ active ที่ "โรงครัวกลาง") -->
+<nav class="bottom-nav">
+    <a href="index.html" class="bottom-nav-item">
+      แผนที่รวม
+    </a>
+    <a href="kitchen.html" class="bottom-nav-item bottom-nav-item-active">
+      โรงครัวกลาง
+    </a>
+    <a href="shelters.html" class="bottom-nav-item">
+      ศูนย์พักพิง
+    </a>
+    <a href="form/index.html" class="bottom-nav-item">
+      แจ้งโรงครัว/ศูนย์อพยพ
+    </a>
+</nav>
+
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet Fullscreen Plugin JS -->
+  <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+
+  <!-- JS หลัก -->
+  <script src="app.js"></script>
+</body>
+</html>
