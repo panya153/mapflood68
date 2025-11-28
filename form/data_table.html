@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>ตารางข้อมูลพื้นที่ช่วยเหลือ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Sarabun", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 12px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      padding: 16px 14px 20px;
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        padding: 20px 20px 24px;
+        margin-top: 12px;
+      }
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    .title-block h1 {
+      font-size: 1.3rem;
+      margin: 0;
+      color: #111827;
+    }
+
+    .title-block .subtitle {
+      font-size: 0.85rem;
+      color: #6b7280;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.9rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      color: #374151;
+      background: #f9fafb;
+    }
+
+    .nav-links a:hover {
+      background: #e5e7eb;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .tab-group {
+      display: inline-flex;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      background: #f9fafb;
+    }
+
+    .tab-btn {
+      border: none;
+      padding: 7px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: transparent;
+      color: #4b5563;
+      min-width: 110px;
+    }
+
+    .tab-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    @media (min-width: 640px) {
+      .search-box {
+        justify-content: flex-end;
+      }
+    }
+
+    .search-box input {
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      font-size: 0.9rem;
+      min-width: 200px;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.3);
+    }
+
+    .count-text {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .table-wrapper {
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+      font-size: 0.85rem;
+    }
+
+    thead {
+      background: #f3f4f6;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: 600;
+      color: #374151;
+      white-space: nowrap;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f9fafb;
+    }
+
+    tbody tr:hover {
+      background: #eef2ff;
+    }
+
+    a.map-link {
+      color: #2563eb;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    a.map-link:hover {
+      text-decoration: underline;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: #e5e7eb;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="container">
+    <div class="header">
+      <div class="title-block">
+        <h1>ตารางข้อมูลพื้นที่ช่วยเหลือ</h1>
+        <div class="subtitle">
+          ดูและค้นหาข้อมูล <span class="badge" id="currentTypeLabel">ศูนย์พักพิง</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="index.html">หน้าหลัก</a>
+        <a href="shelter_form.html">แจ้งศูนย์พักพิง</a>
+        <a href="kitchen_form.html">แจ้งครัวกลาง</a>
+        <a href="map.html">ดูแผนที่</a>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div>
+        <div class="tab-group">
+          <button class="tab-btn active" data-type="shelter">ศูนย์พักพิง</button>
+          <button class="tab-btn" data-type="kitchen">ครัวกลาง</button>
+        </div>
+      </div>
+      <div>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="ค้นหา: จังหวัด / อำเภอ / ชื่อศูนย์ / ผู้ประสานงาน..." />
+        </div>
+        <div class="count-text" id="countText">กำลังโหลดข้อมูล...</div>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <div class="table-scroll">
+        <table id="dataTable">
+          <thead id="tableHead"></thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ใช้ URL เดียวกับฟอร์ม
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx_N1_Pnqfu7KQSEKViabgEbDLWtx4m5GXjRe7dNPKUHQu6IMB8w0952A6bnYZG3TU/exec";
+
+  const tabButtons = document.querySelectorAll('.tab-btn');
+  const searchInput = document.getElementById('searchInput');
+  const tableHead = document.getElementById('tableHead');
+  const tableBody = document.getElementById('tableBody');
+  const countText = document.getElementById('countText');
+  const currentTypeLabel = document.getElementById('currentTypeLabel');
+
+  let currentType = 'shelter'; // 'shelter' | 'kitchen'
+  let sheltersData = [];
+  let kitchensData = [];
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.getAttribute('data-type');
+      if (type === currentType) return;
+
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      currentType = type;
+      currentTypeLabel.textContent = type === 'shelter' ? 'ศูนย์พักพิง' : 'ครัวกลาง';
+      renderTable();
+    });
+  });
+
+  searchInput.addEventListener('input', () => {
+    renderTable();
+  });
+
+  async function loadData() {
+    countText.textContent = "กำลังโหลดข้อมูล...";
+
+    try {
+      // ขอข้อมูลทั้งสองแบบในครั้งเดียว
+      const res = await fetch(SCRIPT_URL + '?t=' + Date.now());
+      const text = await res.text();
+      let data = null;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error("JSON parse error:", err, "raw:", text);
+      }
+
+      if (!data || data.status !== 'success') {
+        countText.textContent = "ไม่สามารถโหลดข้อมูลได้";
+        return;
+      }
+
+      sheltersData = data.shelters || [];
+      kitchensData = data.kitchens || [];
+
+      renderTable();
+
+    } catch (err) {
+      console.error(err);
+      countText.textContent = "ไม่สามารถเชื่อมต่อ API ได้";
+    }
+  }
+
+  function renderTable() {
+    const keyword = searchInput.value.trim().toLowerCase();
+
+    let rows = [];
+    if (currentType === 'shelter') {
+      // ศูนย์พักพิง
+      setShelterHeader();
+      rows = sheltersData.filter(item => {
+        if (!keyword) return true;
+        const text = [
+          item.province,
+          item.district,
+          item.area,
+          item.shelterName,
+          item.details,
+          item.coordinators
+        ].join(' ').toLowerCase();
+        return text.includes(keyword);
+      });
+      renderShelterBody(rows);
+    } else {
+      // ครัวกลาง
+      setKitchenHeader();
+      rows = kitchensData.filter(item => {
+        if (!keyword) return true;
+        const text = [
+          item.province,
+          item.district,
+          item.subdistrict,
+          item.reliefCenterName,
+          item.centerDetails,
+          item.coordinatorName,
+          item.coordinatorPhone
+        ].join(' ').toLowerCase();
+        return text.includes(keyword);
+      });
+      renderKitchenBody(rows);
+    }
+
+    countText.textContent = `แสดง ${rows.length} รายการ`;
+  }
+
+  function setShelterHeader() {
+    tableHead.innerHTML = `
+      <tr>
+        <th>จังหวัด</th>
+        <th>อำเภอ</th>
+        <th>ตำบล</th>
+        <th>ชื่อศูนย์พักพิง</th>
+        <th>พิกัด (lat, lng)</th>
+        <th>ลิงก์แผนที่</th>
+        <th>รายละเอียด</th>
+        <th>ผู้ประสานงาน</th>
+      </tr>
+    `;
+  }
+
+  function renderShelterBody(rows) {
+    tableBody.innerHTML = '';
+    rows.forEach(item => {
+      const tr = document.createElement('tr');
+
+      const coordText = (item.lat || item.lng)
+        ? `${item.lat || ''}, ${item.lng || ''}`
+        : '';
+
+      const mapCell = item.mapLink
+        ? `<a class="map-link" href="${item.mapLink}" target="_blank">เปิดแผนที่</a>`
+        : '';
+
+      tr.innerHTML = `
+        <td>${item.province || ''}</td>
+        <td>${item.district || ''}</td>
+        <td>${item.area || ''}</td>
+        <td>${item.shelterName || ''}</td>
+        <td>${coordText}</td>
+        <td>${mapCell}</td>
+        <td>${item.details || ''}</td>
+        <td>${item.coordinators || ''}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  function setKitchenHeader() {
+    tableHead.innerHTML = `
+      <tr>
+        <th>Province</th>
+        <th>District</th>
+        <th>Subdistrict</th>
+        <th>Relief Center</th>
+        <th>Details</th>
+        <th>Latitude / Longitude</th>
+        <th>Coordinator</th>
+        <th>Phone</th>
+        <th>Map</th>
+      </tr>
+    `;
+  }
+
+  function renderKitchenBody(rows) {
+    tableBody.innerHTML = '';
+    rows.forEach(item => {
+      const coordText = (item.latitude || item.longitude)
+        ? `${item.latitude || ''}, ${item.longitude || ''}`
+        : '';
+
+      const mapCell = item.googleMap
+        ? `<a class="map-link" href="${item.googleMap}" target="_blank">เปิดแผนที่</a>`
+        : '';
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.province || ''}</td>
+        <td>${item.district || ''}</td>
+        <td>${item.subdistrict || ''}</td>
+        <td>${item.reliefCenterName || ''}</td>
+        <td>${item.centerDetails || ''}</td>
+        <td>${coordText}</td>
+        <td>${item.coordinatorName || ''}</td>
+        <td>${item.coordinatorPhone || ''}</td>
+        <td>${mapCell}</td>
+      `;
+      tableBody.appendChild(tr);
+    });
+  }
+
+  // เริ่มโหลดข้อมูลเมื่อเปิดหน้า
+  loadData();
+</script>
+</body>
+</html>
