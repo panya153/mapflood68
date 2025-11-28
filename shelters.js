@@ -93,7 +93,7 @@ async function loadShelterData() {
   const statusText = document.getElementById("status-text");
 
   try {
-    statusText.textContent = "กำลังโหลดข้อมูลศูนย์พักพิงจาก Google Sheets...";
+    statusText.textContent = "กำลังโหลดข้อมูลศูนย์พักพิง";
     statusText.className = "badge-value badge-loading";
 
     console.log("เรียก SHELTERS_API_URL:", SHELTERS_API_URL);

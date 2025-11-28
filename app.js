@@ -103,7 +103,7 @@ async function loadData() {
   const statusText = document.getElementById("status-text");
 
   try {
-    statusText.textContent = "กำลังโหลดข้อมูลจาก Google Sheets...";
+    statusText.textContent = "กำลังโหลดข้อมูล";
     statusText.className = "badge-value badge-loading";
 
     console.log("เรียก API_URL:", API_URL);

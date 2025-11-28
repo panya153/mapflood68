@@ -103,7 +103,7 @@ async function loadAllData() {
   const statusText = document.getElementById("status-text");
 
   try {
-    statusText.textContent = "กำลังโหลดข้อมูลจาก Google Sheets (2 แหล่ง)...";
+    statusText.textContent = "กำลังโหลดข้อมูล(2 แหล่ง)...";
     statusText.className = "badge-value badge-loading";
 
     const [kitchenRes, shelterRes] = await Promise.all([
