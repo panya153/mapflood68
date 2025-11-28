@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>แบบฟอร์มแจ้งศูนย์พักพิง</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Sarabun", sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      margin: 16px auto;
+      background: #ffffff;
+      padding: 16px 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    @media (min-width: 640px) {
+      .container {
+        margin: 24px auto;
+        padding: 20px 24px 24px;
+      }
+    }
+
+    h1 {
+      font-size: 1.25rem;
+      margin: 0 0 8px;
+      text-align: center;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 0.8rem;
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 10px 11px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+      background: #f9fafb;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37,99,235,0.3);
+      background: #ffffff;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .hint {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-direction: column;      /* จอเล็ก = ซ้อนกัน */
+    }
+
+    .row .field {
+      flex: 1;
+      margin-bottom: 0;
+    }
+
+    @media (min-width: 640px) {
+      .row {
+        flex-direction: row;       /* จอใหญ่ = วางข้างกัน */
+      }
+    }
+
+    .btn,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      border: none;
+      padding: 11px 14px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.1s ease;
+    }
+
+    .btn {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-secondary {
+      background: #059669;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+      font-size: 0.95rem;
+    }
+
+    .btn:active,
+    .btn-secondary:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .btn:disabled,
+    .btn-secondary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="container">
+    <h1>แบบฟอร์มแจ้งศูนย์พักพิง</h1>
+    <div class="subtitle">สำหรับบันทึกพิกัดศูนย์พักพิงลง Google Sheet</div>
+
+    <form id="shelterForm" autocomplete="off">
+      <div class="field">
+        <label for="province">จังหวัด</label>
+        <input type="text" id="province" name="province" required />
+      </div>
+
+      <div class="field">
+        <label for="district">อำเภอ</label>
+        <input type="text" id="district" name="district" required />
+      </div>
+
+      <div class="field">
+        <label for="shelter_name">ชื่อศูนย์พักพิง</label>
+        <input type="text" id="shelter_name" name="shelter_name" required />
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="lat">Lat (ละติจูด)</label>
+          <input type="text" id="lat" name="lat" placeholder="เช่น 18.123456" inputmode="decimal" />
+        </div>
+        <div class="field">
+          <label for="lng">Long (ลองจิจูด)</label>
+          <input type="text" id="lng" name="lng" placeholder="เช่น 98.123456" inputmode="decimal" />
+        </div>
+      </div>
+
+      <button type="button" class="btn-secondary" id="btnLocation">
+        📍 ดึงพิกัดปัจจุบัน
+      </button>
+
+      <div class="field">
+        <label for="map_link">หรือ ลิงก์ Google Map</label>
+        <input
+          type="text"
+          id="map_link"
+          name="map_link"
+          placeholder="https://maps.app.goo.gl/..."
+        />
+        <div class="hint">ถ้าไม่ทราบ Lat/Long สามารถวางลิงก์ Google Map ตำแหน่งศูนย์พักพิงได้</div>
+      </div>
+
+      <div class="field">
+        <label for="area">บริเวณพื้นที่ (ตำบล)</label>
+        <input type="text" id="area" name="area" />
+      </div>
+
+      <div class="field">
+        <label for="details">รายละเอียดเพิ่มเติม</label>
+        <textarea
+          id="details"
+          name="details"
+          placeholder="เช่น จำนวนคนที่พัก, สภาพพื้นที่, การเดินทางเข้าออก ฯลฯ"
+        ></textarea>
+      </div>
+
+      <div class="field">
+        <label for="coordinators">ผู้ประสานงาน / เบอร์โทร (ใส่ได้หลายคน)</label>
+        <textarea
+          id="coordinators"
+          name="coordinators"
+          placeholder="- คุณเอ 08x-xxx-xxxx&#10;- คุณบี 09x-xxx-xxxx"
+        ></textarea>
+      </div>
+
+      <button class="btn" type="submit" id="btnSubmit">
+        ส่งข้อมูลศูนย์พักพิง
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // 👉 ใส่ URL Web App จาก Google Apps Script ตรงนี้
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyx_N1_Pnqfu7KQSEKViabgEbDLWtx4m5GXjRe7dNPKUHQu6IMB8w0952A6bnYZG3TU/exec";
+
+  const form = document.getElementById("shelterForm");
+  const btnSubmit = document.getElementById("btnSubmit");
+  const btnLocation = document.getElementById("btnLocation");
+
+  // ⭐ ปุ่มดึงพิกัด + SweetAlert2
+  btnLocation.addEventListener("click", () => {
+    const latInput = document.getElementById("lat");
+    const lngInput = document.getElementById("lng");
+
+    if (!navigator.geolocation) {
+      Swal.fire({
+        icon: "error",
+        title: "อุปกรณ์ไม่รองรับ",
+        text: "มือถือ/เบราว์เซอร์ของคุณไม่รองรับการดึงพิกัด"
+      });
+      return;
+    }
+
+    latInput.value = "กำลังดึง...";
+    lngInput.value = "กำลังดึง...";
+    btnLocation.disabled = true;
+    btnLocation.textContent = "กำลังดึงพิกัด...";
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        latInput.value = pos.coords.latitude.toFixed(6);
+        lngInput.value = pos.coords.longitude.toFixed(6);
+        btnLocation.disabled = false;
+        btnLocation.textContent = "📍 ดึงพิกัดปัจจุบัน";
+
+        Swal.fire({
+          icon: "success",
+          title: "ดึงพิกัดสำเร็จ!",
+          text: "ระบบบันทึกตำแหน่งของคุณเรียบร้อยแล้ว",
+          confirmButtonText: "ตกลง"
+        });
+      },
+      (err) => {
+        latInput.value = "";
+        lngInput.value = "";
+        btnLocation.disabled = false;
+        btnLocation.textContent = "📍 ดึงพิกัดปัจจุบัน";
+
+        Swal.fire({
+          icon: "error",
+          title: "ไม่สามารถดึงพิกัดได้",
+          text: err.message
+        });
+      },
+      { enableHighAccuracy: true, timeout: 15000 }
+    );
+  });
+
+  // ⭐ ส่งข้อมูลไป Google Sheet + SweetAlert2 เมื่อบันทึกเสร็จ
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = "กำลังส่งข้อมูล...";
+
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      const text = await res.text();
+      let data = null;
+      try {
+        data = JSON.parse(text);
+      } catch (jsonErr) {
+        console.error("JSON parse error:", jsonErr, "raw:", text);
+      }
+
+      if (res.ok && data && data.status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "บันทึกสำเร็จ!",
+          text: "ข้อมูลถูกบันทึกลงระบบเรียบร้อยแล้ว",
+          confirmButtonText: "ตกลง"
+        });
+        form.reset();
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "บันทึกไม่สำเร็จ",
+          text:
+            (data && data.message) ||
+            "เกิดข้อผิดพลาดในการบันทึกข้อมูล (status: " + res.status + ")"
+        });
+      }
+    } catch (err) {
+      console.error("Fetch error:", err);
+      Swal.fire({
+        icon: "error",
+        title: "เชื่อมต่อเซิร์ฟเวอร์ไม่ได้",
+        text: "อาจเป็นปัญหาเครือข่าย หรือ URL Web App ไม่ถูกต้อง"
+      });
+    } finally {
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = "ส่งข้อมูลศูนย์พักพิง";
+    }
+  });
+</script>
+</body>
+</html>

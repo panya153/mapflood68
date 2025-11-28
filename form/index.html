@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>ระบบแจ้งข้อมูลช่วยเหลือ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: "Sarabun", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f3f4f6;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      padding: 24px 20px 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    .menu-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      border-radius: 14px;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      text-align: center;
+    }
+
+    /* ปุ่มแต่ละสี */
+    .btn-shelter {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(37,99,235,0.3);
+    }
+
+    .btn-kitchen {
+      background: #059669;
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(5,150,105,0.3);
+    }
+
+    .btn-map {
+      background: #f59e0b;
+      color: #fff;
+      box-shadow: 0 3px 6px rgba(245,158,11,0.35);
+    }
+
+    .menu-btn:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>ระบบแจ้งข้อมูลช่วยเหลือ</h1>
+    <div class="subtitle">เลือกประเภทข้อมูลที่ต้องการแจ้ง / ดูข้อมูล</div>
+
+    <a href="shelter_form.html" class="menu-btn btn-shelter">
+      🏠 แจ้งศูนย์พักพิง
+    </a>
+
+    <a href="kitchen_form.html" class="menu-btn btn-kitchen">
+      🍳 แจ้งพิกัดครัวกลาง
+    </a>
+
+    <a href="s/index.html" class="menu-btn btn-map">
+      🗺️ ดูแผนที่รวม
+    </a>
+  </div>
+
+</body>
+</html>
