@@ -106,7 +106,8 @@
     }
 
     .btn,
-    .btn-secondary {
+    .btn-secondary,
+    .btn-back {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -119,6 +120,7 @@
       cursor: pointer;
       margin-top: 8px;
       transition: transform 0.05s ease, box-shadow 0.05s ease, background 0.1s ease;
+      text-decoration: none;
     }
 
     .btn {
@@ -134,8 +136,16 @@
       font-size: 0.95rem;
     }
 
+    .btn-back {
+      background: #6b7280;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(107,114,128,0.3);
+      font-size: 0.95rem;
+    }
+
     .btn:active,
-    .btn-secondary:active {
+    .btn-secondary:active,
+    .btn-back:active {
       transform: translateY(1px);
       box-shadow: 0 1px 2px rgba(0,0,0,0.2);
     }
@@ -226,6 +236,11 @@
         ส่งข้อมูลครัวกลาง
       </button>
     </form>
+
+    <!-- 🔙 ปุ่มกลับหน้าหลัก -->
+    <a href="index.html" class="btn-back">
+      ← กลับหน้าหลัก
+    </a>
   </div>
 </div>
 
